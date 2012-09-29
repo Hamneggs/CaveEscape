@@ -56,6 +56,12 @@ public class GLES10Renderer implements GLSurfaceView.Renderer {
     byte frame;
 
     /**
+     * The current speed of the terrain, stored independent of the ship's multiplier
+     * in the case that we are playing in survival mode.
+     */
+    private float speed;
+
+    /**
      * The constructor for the OpenGL portion of the gameplay. Here we encapsulate
      * the gameplay mode, the selected player object, a reference to the controller view,
      * and the sound engine.
@@ -70,9 +76,10 @@ public class GLES10Renderer implements GLSurfaceView.Renderer {
         this.mode = mode;
         this.player = player;
         this.controllerView = controllerView;
+        this.speed = player.getShip().getForwardSpeed();
 
         //Create the pickup bag, which populates the scene with pickups.
-        pickupBag = new PickupBag(5, player, bottom, sfx);
+        pickupBag = new PickupBag(5, player, sfx, mode);
         pickupBag.refreshBag(mode);
 
         //player.setPickupBag(pickupBag);
@@ -85,12 +92,12 @@ public class GLES10Renderer implements GLSurfaceView.Renderer {
                 Const.gpTDepth,
                 Const.gpResX,
                 Const.gpResY,
-                Const.gpBaseFDensity,
+                Const.gpBaseFDensity+Const.ptgScaleFactorDiff,
                 Const.gpBaseHScale,
                 Const.gpSScale,
                 (float)Math.random(),
                 true,
-                player.getShip().getForwardSpeed(),
+                speed,
                 player,
                 true,
                 null,
@@ -104,12 +111,12 @@ public class GLES10Renderer implements GLSurfaceView.Renderer {
                 Const.gpTDepth,
                 Const.gpResX,
                 Const.gpResY,
-                Const.gpBaseFDensity,
+                Const.gpBaseFDensity -Const.ptgScaleFactorDiff,
                 Const.gpBaseHScale,
                 Const.gpSScale,
                 (float)Math.random(),
                 false,
-                player.getShip().getForwardSpeed(),
+                speed,
                 player,
                 false,
                 pickupBag,
@@ -198,6 +205,11 @@ public class GLES10Renderer implements GLSurfaceView.Renderer {
             player.setYVelocity(player.getYVelocity() / Const.gpVelDecayFactor);
         }
 
+        if(mode == GameplayMode.Survival){
+            top.setSpeed(speed+(player.getMultiplier()*Const.gpSurvivalMultSpeedFactor));
+            bottom.setSpeed(speed+(player.getMultiplier()*Const.gpSurvivalMultSpeedFactor));
+        }
+
         if(frame%Const.gpFramesPerScoreIncrease == 0)
             player.changeScore(Const.gpScoreIncrease, Player.ScoreChangeType.STANDARD);
 
@@ -224,8 +236,15 @@ public class GLES10Renderer implements GLSurfaceView.Renderer {
         //increment the speed scales, if the forward speed
         //is less than the max speed.
         if(top.getSpeed() <= Const.shipMaxForwardSpeed){
-            top.setSpeed(top.getSpeed()+Const.gpFwdSpdChangeConstant);
-            bottom.setSpeed(bottom.getSpeed() + Const.gpFwdSpdChangeConstant);
+            speed += Const.gpFwdSpdChangeConstant;
+            if(mode == GameplayMode.Survival){
+                top.setSpeed(speed+(player.getMultiplier()*Const.gpSurvivalMultSpeedFactor));
+                bottom.setSpeed(speed+(player.getMultiplier()*Const.gpSurvivalMultSpeedFactor));
+            }
+            else{
+                top.setSpeed(speed);
+                bottom.setSpeed(speed);
+            }
         }
         player.getShip().setStrafeSpeed(player.getShip().getStrafeSpeed()+Const.gpStfSpdChangeConstant);
     }

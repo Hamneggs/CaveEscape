@@ -1,5 +1,6 @@
 package CaveEscapeCore.Pickups;
 
+import CaveEscapeCore.CoreGameplay.GameplayMode;
 import CaveEscapeCore.Player.Player;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -16,6 +17,12 @@ public abstract class Pickup {
 
     //The type of pickup this is.
     protected PickupType pType;
+
+    /**
+     * The gameplay mode that is being played. We store this
+     * so that we can modify the rules accordingly.
+     */
+    protected GameplayMode mode;
 
     //The class of pickup this is.
     protected PickupClass pClass;
@@ -36,6 +43,7 @@ public abstract class Pickup {
     public Pickup(
                   PickupType pType,
                   PickupClass pClass,
+                  GameplayMode mode,
                   float r,
                   float g,
                   float b,
@@ -48,6 +56,7 @@ public abstract class Pickup {
 
         this.pType = pType;
         this.pClass = pClass;
+        this.mode = mode;
 
         this.r = r;
         this.g = g;

@@ -1,5 +1,6 @@
 package CaveEscapeCore.Pickups;
 
+import CaveEscapeCore.CoreGameplay.GameplayMode;
 import CaveEscapeCore.Player.Player;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -17,6 +18,7 @@ public class PointPickup extends Pickup {
      * The point value of this PointPickup.
      */
     int points;
+
 
     /**
      * The geometry buffers of the pickup.
@@ -40,6 +42,7 @@ public class PointPickup extends Pickup {
      */
     public PointPickup(int points,
                        PickupClass pClass,
+                       GameplayMode mode,
                        float r,
                        float g,
                        float b,
@@ -51,7 +54,7 @@ public class PointPickup extends Pickup {
                        float sz
                       ){
 
-        super(PickupType.POINT, pClass, r, g, b, x, y, z, sx, sy, sz);
+        super(PickupType.POINT, pClass, mode, r, g, b, x, y, z, sx, sy, sz);
         this.points = points;
         initBuffers();
         packBuffers();

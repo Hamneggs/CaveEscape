@@ -1,5 +1,6 @@
 package CaveEscapeCore.Pickups;
 
+import CaveEscapeCore.CoreGameplay.GameplayMode;
 import CaveEscapeCore.Player.Player;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -48,6 +49,7 @@ public class MultPickup extends Pickup {
     public MultPickup(int mult,
                       int multFrames,
                       PickupClass pClass,
+                      GameplayMode mode,
                       float r,
                       float g,
                       float b,
@@ -59,7 +61,7 @@ public class MultPickup extends Pickup {
                       float sz
                      ){
         
-        super(PickupType.MULT, pClass, r, g, b, x, y, z, sx, sy, sz);
+        super(PickupType.MULT, pClass, mode, r, g, b, x, y, z, sx, sy, sz);
         this.mult = mult;
         this.multFrames = multFrames;
         initBuffers();

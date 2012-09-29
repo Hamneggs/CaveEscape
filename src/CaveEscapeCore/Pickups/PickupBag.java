@@ -4,7 +4,6 @@ import CaveEscapeCore.Constants.Const;
 import CaveEscapeCore.CoreGameplay.GameplayMode;
 import CaveEscapeCore.Player.Player;
 import CaveEscapeCore.SoundAndMusic.SFXMEngine;
-import CaveEscapeCore.Terrain.PerlinTerrainGame;
 
 import javax.microedition.khronos.opengles.GL10;
 import java.util.ArrayList;
@@ -33,37 +32,36 @@ public class PickupBag {
     private Player player;
 
     /**
-     * A Terrain instance that we are basing speed off of. May be null.
-     */
-    private PerlinTerrainGame terrain;
-
-    /**
      * The instance of our sound engine with which to play the collection sounds.
      */
-
     private SFXMEngine sfx;
+
+    /**
+     * The gameplay mode that we are currently using. This allows us to differentiate
+     * the rules of the game.
+     */
+    private GameplayMode mode;
 
     /**
      * Constructs the Pickup Bag.
      * @param maxCapacity The maximum capacity of the bag, or more relevantly, the
      *                    maximum number of pickups in play.
      * @param player The player we test for collision against.
-     * @param terrain A PerlinTerrainGame instance whose current speed we use to move the pickups.
      */
-    public PickupBag(int maxCapacity, Player player, PerlinTerrainGame terrain, SFXMEngine sfx){
+    public PickupBag(int maxCapacity, Player player, SFXMEngine sfx, GameplayMode mode){
 
         this.maxCapacity = maxCapacity;
 
         this.player = player;
 
-        this.terrain = terrain;
-
         this.sfx = sfx;
+
+        this.mode = mode;
 
         //Initialize the actual bag.
         bag = new ArrayList<Pickup>(maxCapacity);
         for(int i = 0; i < maxCapacity; i++){
-            bag.add(new PointPickup(10000, PickupClass.MINOR, .2f, 1f, .2f, -3f+((float)(i*.1f)), 0f, -5f, .5f, .5f, .5f));
+            bag.add(new PointPickup(10000, PickupClass.MINOR, mode, .2f, 1f, .2f, -3f+((i*.1f)), 0f, -5f, .5f, .5f, .5f));
         }
 
     }
@@ -224,6 +222,7 @@ public class PickupBag {
                     bag.add(new HealthPickup(
                             (int)(player.getShip().getMaxDamage()/8),
                             c,
+                            mode,
                             Const.clrHealthMinorR, Const.clrHealthMinorG, Const.clrHealthMinorB,
                             x, y, z,
                             .5f,
@@ -235,6 +234,7 @@ public class PickupBag {
                     bag.add(new HealthPickup(
                             (int)(player.getShip().getMaxDamage()/4),
                             c,
+                            mode,
                             Const.clrHealthMediumR, Const.clrHealthMediumG, Const.clrHealthMediumB,
                             x, y, z,
                             .5f,
@@ -244,8 +244,9 @@ public class PickupBag {
                     break;
                 case MAJOR:
                     bag.add(new HealthPickup(
-                            (int)(player.getShip().getMaxDamage()/4),
+                            (int)(player.getShip().getMaxDamage()/3),
                             c,
+                            mode,
                             Const.clrHealthMajorR, Const.clrHealthMajorG, Const.clrHealthMajorB,
                             x, y, z,
                             .5f,
@@ -261,8 +262,9 @@ public class PickupBag {
 
                 case MINOR:
                     bag.add(new HealthPickup(
-                            (int)(60),
+                            60,
                             c,
+                            mode,
                             Const.clrHealthMinorR, Const.clrHealthMinorG, Const.clrHealthMinorB,
                             x, y, z,
                             .5f,
@@ -272,8 +274,9 @@ public class PickupBag {
                     break;
                 case MEDIUM:
                     bag.add(new HealthPickup(
-                            (int)(60),
+                           (60),
                             c,
+                            mode,
                             Const.clrHealthMediumR, Const.clrHealthMediumG, Const.clrHealthMediumB,
                             x, y, z,
                             .5f,
@@ -283,8 +286,9 @@ public class PickupBag {
                     break;
                 case MAJOR:
                     bag.add(new HealthPickup(
-                            (int)(60),
+                            (60),
                             c,
+                            mode,
                             Const.clrHealthMajorR, Const.clrHealthMajorG, Const.clrHealthMajorB,
                             x, y, z,
                             .5f,
@@ -311,6 +315,7 @@ public class PickupBag {
                 bag.add(new MultPickup(
                         2, 3600,
                         c,
+                        mode,
                         Const.clrMultMinorR, Const.clrMultMinorG, Const.clrMultMinorB,
                         x, y, z,
                         .5f,
@@ -322,6 +327,7 @@ public class PickupBag {
                 bag.add(new MultPickup(
                         3, 3000,
                         c,
+                        mode,
                         Const.clrMultMediumR, Const.clrMultMediumG, Const.clrMultMediumB,
                         x, y, z,
                         .5f,
@@ -333,6 +339,7 @@ public class PickupBag {
                 bag.add(new MultPickup(
                         5, 2400,
                         c,
+                        mode,
                         Const.clrMultMajorR, Const.clrMultMajorG, Const.clrMultMajorB,
                         x, y, z,
                         .5f,
@@ -359,6 +366,7 @@ public class PickupBag {
                 bag.add(new PointPickup(
                         1000,
                         c,
+                        mode,
                         Const.clrPointMinorR, Const.clrPointMinorG, Const.clrPointMinorB,
                         x, y, z,
                         .5f,
@@ -370,6 +378,7 @@ public class PickupBag {
                 bag.add(new PointPickup(
                         5000,
                         c,
+                        mode,
                         Const.clrPointMediumR, Const.clrPointMediumG, Const.clrPointMediumB,
                         x, y, z,
                         .5f,
@@ -381,6 +390,7 @@ public class PickupBag {
                 bag.add(new PointPickup(
                         10000,
                         c,
+                        mode,
                         Const.clrPointMajorR, Const.clrPointMajorB, Const.clrPointMajorB,
                         x, y, z,
                         .5f,
@@ -502,8 +512,7 @@ public class PickupBag {
      * Increments the location of the pickups.
      */
     public void incrementPickupLocations(float x, float y, float z){
-        for(int i = 0; i < bag.size(); i++){
-            Pickup p = bag.get(i);
+        for (Pickup p : bag) {
             p.incrementLocation(x, y, z);
         }
     }
@@ -522,7 +531,7 @@ public class PickupBag {
         float y = 0;
         float z = -Const.gpTDepth;
 
-        if(sampleA >= .66f){
+        if(sampleA >= .66f  && mode != GameplayMode.Survival){
             if(sampleB >= .75f){
                 addHealthPickup(PickupClass.MAJOR, x, y, z);
             }

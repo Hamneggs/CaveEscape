@@ -320,7 +320,7 @@ public class Const {
      * The factor by which the terrain's current feature
      * density is multiplied every time the player levels up.
      */
-    public static float gpDensityChangeFactor = 1.000105f;
+    public static float gpDensityChangeFactor = 1.000205f;
 
     /**
      * The factor by which the terrain's current height
@@ -440,6 +440,13 @@ public class Const {
      */
     public static float gpShipAnimSensitivity = .05f;
 
+    /**
+     * In survival mode, we change the terrain's speed based on the player's
+     * current multiplier, but cut it with this factor so that we don't
+     * enter warp speed.
+     */
+     public static float gpSurvivalMultSpeedFactor = .04f;
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //                                                                                                                    //
@@ -452,6 +459,12 @@ public class Const {
      * so that the player cannot see the edge of the terrain.
      */
     public static float ptgHorizFraction = .45f;
+
+    /**
+     * The scale difference factor between top and bottom terrain.
+     * This makes things a bit less mundane.
+     */
+    public static float ptgScaleFactorDiff = 1.005f;
 
     /**
      * The percentage of teh terrain the Player can traverse

@@ -1,5 +1,6 @@
 package CaveEscapeCore.Pickups;
 
+import CaveEscapeCore.CoreGameplay.GameplayMode;
 import CaveEscapeCore.Player.Player;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -47,6 +48,7 @@ public class HealthPickup extends Pickup {
     public HealthPickup(
                        int health,
                        PickupClass pClass,
+                       GameplayMode mode,
                        float r,
                        float g,
                        float b,
@@ -58,7 +60,7 @@ public class HealthPickup extends Pickup {
                        float sz
                       ){
 
-        super(PickupType.HEALTH, pClass, r, g, b, x, y, z, sx, sy, sz);
+        super(PickupType.HEALTH, pClass, mode, r, g, b, x, y, z, sx, sy, sz);
         this.health = health;
         initBuffers();
 
