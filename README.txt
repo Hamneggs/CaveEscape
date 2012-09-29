@@ -27,6 +27,7 @@ At the main menu, you start out with a choice of three game modes:
 	speeds you up, and there are no health pickups. 
 *Disclaimer: As of 8-21-12, they're just all classic with different
 	music and colors. Differentiation is coming soon.
+	         As of 9-29-12, I finally got survival mode working.
 
 Next, you arrive at the swanky ship showroom, which is convieniently
 located in the cave as well, perhaps because the owner knows there's
